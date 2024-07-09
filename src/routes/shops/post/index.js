@@ -5,12 +5,12 @@ import middlewares from '../../../middlewares/index.js';
 import schema from './schema.js';
 
 const router = Router();
-const { withEmployeeService, withValidateSchema } = middlewares;
+const { withShopService, withValidateSchema } = middlewares;
 
 router.post(
   '/employees',
   withValidateSchema(schema),
-  withEmployeeService,
+  withShopService,
   createEmployee,
 );
 

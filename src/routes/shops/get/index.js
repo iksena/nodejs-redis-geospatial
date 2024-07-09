@@ -4,11 +4,11 @@ import getEmployees from './handler.js';
 import middlewares from '../../../middlewares/index.js';
 
 const router = Router();
-const { withEmployeeService } = middlewares;
+const { withShopService } = middlewares;
 
 router.get(
   '/employees',
-  withEmployeeService,
+  withShopService,
   getEmployees,
 );
 

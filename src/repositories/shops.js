@@ -1,5 +1,5 @@
 /**
- *  Represents the connection to shops collection in mongoDb
+ *  Represents the connection to shops collection in postgres
  */
 class ShopsRepository {
   /**
@@ -7,7 +7,7 @@ class ShopsRepository {
    *
    * @param {object} opts - options
    * @property {object} opts.logger - logger object
-   * @property {object} opts.collection - shops collection object
+   * @property {object} opts.db - database client
    * @property {object} opts.config - configuration object
    * @returns {void}
    */

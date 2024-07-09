@@ -1,4 +1,4 @@
-const ShopsRepository = require('./shops');
+import ShopsRepository from './shops.js';
 
 export default {
   ShopsRepository,

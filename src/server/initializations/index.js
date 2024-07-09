@@ -1,3 +1,7 @@
-import redisInitialization from './connectRedis';
+import redisInitialization from './connectRedis.js';
+import postgresInitialization from './connectPostgreSQL.js';
 
-export default [redisInitialization];
+export default [
+  redisInitialization,
+  postgresInitialization,
+];

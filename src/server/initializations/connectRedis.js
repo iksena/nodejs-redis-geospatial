@@ -1,5 +1,6 @@
-const redis = require('redis');
-const config = require('../../config');
+import redis from 'redis';
+
+import config from '../../config/index.js';
 
 /**
  * Initialization redis
@@ -21,4 +22,4 @@ const redisInitialization = async (app) => {
   Object.assign(app.locals, { redisClient });
 };
 
-module.exports = redisInitialization;
+export default redisInitialization;

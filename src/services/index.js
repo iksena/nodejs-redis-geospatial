@@ -1,5 +1,5 @@
-const ShopService = require('./shops');
+import ShopService from './shops.js';
 
-module.exports = {
+export default {
   ShopService,
 };
