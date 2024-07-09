@@ -1,3 +1,5 @@
+import CreateError from 'http-errors';
+
 class ShopsGeospatial {
   /**
    * Initialize ShopsGeospatialRepository
@@ -17,7 +19,15 @@ class ShopsGeospatial {
    * Reset shops geospatial
    */
   async reset() {
-    await this.redisClient.del(this.keyShops);
+    try {
+      this.logger.info('[REDIS] Reset shop locations');
+
+      await this.redisClient.del(this.keyShops);
+    } catch (error) {
+      this.logger.error('[REDIS][ERROR] Reset shop locations error', error);
+
+      throw CreateError(500, 'Reset shop locations error');
+    }
   }
 
   /**
@@ -25,31 +35,43 @@ class ShopsGeospatial {
    * @param {Array<Object>} shopList - list of shops
    */
   async populate(shopList) {
-    this.logger.info('Populating shop locations to Redis');
+    try {
+      this.logger.info('[REDIS] Populating shop locations');
 
-    const populatePromise = shopList.map((shop) => this.redisClient.geoAdd(this.keyShops, {
-      longitude: shop.longitude,
-      latitude: shop.latitude,
-      member: shop.id,
-    }));
+      const populatePromise = shopList.map((shop) => this.redisClient.geoAdd(this.keyShops, {
+        longitude: shop.longitude,
+        latitude: shop.latitude,
+        member: shop.id,
+      }));
 
-    await Promise.all(populatePromise);
+      await Promise.all(populatePromise);
+    } catch (error) {
+      this.logger.error('[REDIS][ERROR] Populate shop locations error', error);
+
+      throw CreateError(500, 'Populate shop locations error');
+    }
   }
 
   async findNearbyByRadius(latitude, longitude, radius) {
-    const response = await this.redisClient.geoSearchWith(
-      this.keyShops,
-      { longitude, latitude },
-      { radius, unit: 'm' },
-      ['WITHDIST'],
-      { SORT: 'ASC' },
-    );
+    try {
+      const response = await this.redisClient.geoSearchWith(
+        this.keyShops,
+        { longitude, latitude },
+        { radius, unit: 'm' },
+        ['WITHDIST'],
+        { SORT: 'ASC' },
+      );
 
-    this.logger.info('Found nearby locations', {
-      latitude, longitude, radius,
-    });
+      this.logger.info('[REDIS] Found nearby locations', {
+        latitude, longitude, radius,
+      });
 
-    return response;
+      return response;
+    } catch (error) {
+      this.logger.error('[REDIS][ERROR] Find nearby shop locations error', error);
+
+      throw CreateError(500, 'Find nearby shop locations error');
+    }
   }
 }
 

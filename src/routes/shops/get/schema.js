@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import CreateError from 'http-errors';
 
 const searchNearby = Joi.object({
   radius: Joi.number()
@@ -7,10 +8,18 @@ const searchNearby = Joi.object({
   latitude: Joi.number()
     .min(-85.05112878)
     .max(85.05112878)
-    .when('radius', { is: Joi.exist(), then: Joi.required(), otherwise: Joi.optional() })
+    .when('radius', {
+      is: Joi.exist(),
+      then: Joi.required(),
+      otherwise: Joi.forbidden().error(CreateError(400, 'Query "radius" is required')),
+    })
     .description('Latitude'),
   longitude: Joi.number()
-    .when('radius', { is: Joi.exist(), then: Joi.required(), otherwise: Joi.optional() })
+    .when('radius', {
+      is: Joi.exist(),
+      then: Joi.required(),
+      otherwise: Joi.forbidden().error(CreateError(400, 'Query "radius" is required')),
+    })
     .min(-180)
     .max(180)
     .description('Longitude'),

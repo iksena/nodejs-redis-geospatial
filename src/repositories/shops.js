@@ -1,4 +1,6 @@
 import format from 'pg-format';
+import CreateError from 'http-errors';
+
 /**
  *  Represents the connection to shops collection in postgres
  */
@@ -23,11 +25,17 @@ class ShopsRepository {
    * @returns {Array<Object>} list of shops
    */
   async findAll() {
-    const query = format('SELECT * FROM %I', this.tableShops);
-    this.logger.info('[DB] Get all shops', { query });
-    const { rows } = await this.dbClient.query(query);
+    try {
+      const query = format('SELECT * FROM %I', this.tableShops);
+      this.logger.info('[DB] Get all shops', { query });
+      const { rows } = await this.dbClient.query(query);
 
-    return rows;
+      return rows;
+    } catch (error) {
+      this.logger.error('[DB][ERROR] Get shops error', error);
+
+      throw CreateError(500, 'Get shops error');
+    }
   }
 
   /**
@@ -36,11 +44,17 @@ class ShopsRepository {
    * @returns {Object} shop object
    */
   async findOneById(id) {
-    const query = format('SELECT * FROM %I WHERE id = %L', this.tableShops, id);
-    this.logger.info('[DB] Find a shop', { query });
-    const { rows: [result] } = await this.dbClient.query(query);
+    try {
+      const query = format('SELECT * FROM %I WHERE id = %L', this.tableShops, id);
+      this.logger.info('[DB] Find a shop', { query });
+      const { rows: [result] } = await this.dbClient.query(query);
 
-    return result;
+      return result;
+    } catch (error) {
+      this.logger.error('[DB][ERROR] Get shop by id error', error);
+
+      throw CreateError(500, 'Get shop by id error');
+    }
   }
 
   /**
@@ -49,9 +63,15 @@ class ShopsRepository {
    * @returns {Object} shop object
    */
   async deleteById(id) {
-    const query = format('DELETE FROM %I WHERE id = %L', this.tableShops, id);
-    this.logger.info('[DB] Delete a shop', { query });
-    await this.dbClient.query(query);
+    try {
+      const query = format('DELETE FROM %I WHERE id = %L', this.tableShops, id);
+      this.logger.info('[DB] Delete a shop', { query });
+      await this.dbClient.query(query);
+    } catch (error) {
+      this.logger.error('[DB][ERROR] Delete shop error', error);
+
+      throw CreateError(500, 'Delete shop error');
+    }
   }
 
   /**
@@ -61,15 +81,21 @@ class ShopsRepository {
    * @returns {promise<object>} shop
    */
   async insert(payload) {
-    const query = format(
-      'INSERT INTO %I (name, latitude, longitude) VALUES (%L) RETURNING *;',
-      this.tableShops,
-      [payload.name, payload.latitude, payload.longitude],
-    );
-    this.logger.info('[DB] Insert a shop', { query });
-    const { rows: [result] } = await this.dbClient.query(query);
+    try {
+      const query = format(
+        'INSERT INTO %I (name, latitude, longitude) VALUES (%L) RETURNING *;',
+        this.tableShops,
+        [payload.name, payload.latitude, payload.longitude],
+      );
+      this.logger.info('[DB] Insert a shop', { query });
+      const { rows: [result] } = await this.dbClient.query(query);
 
-    return result;
+      return result;
+    } catch (error) {
+      this.logger.error('[DB][ERROR] Insert shop error', error);
+
+      throw CreateError(500, 'Insert shop error');
+    }
   }
 
   /**
@@ -80,24 +106,30 @@ class ShopsRepository {
    * @returns {promise<object>} shop
    */
   async update(id, payload) {
-    const values = [];
-    const setQuery = Object.entries(payload).map(
-      ([key, value]) => {
-        values.push(value);
-        return `${key} = %L`;
-      },
-    ).join(', ');
-    const query = format(
-      `UPDATE %I SET ${setQuery} WHERE id = %L RETURNING *;`,
-      this.tableShops,
-      ...values,
-      id,
-    );
+    try {
+      const values = [];
+      const setQuery = Object.entries(payload).map(
+        ([key, value]) => {
+          values.push(value);
+          return `${key} = %L`;
+        },
+      ).join(', ');
+      const query = format(
+        `UPDATE %I SET ${setQuery} WHERE id = %L RETURNING *;`,
+        this.tableShops,
+        ...values,
+        id,
+      );
 
-    this.logger.info('[DB] Update a shop', { query });
-    const { rows: [result] } = await this.dbClient.query(query);
+      this.logger.info('[DB] Update a shop', { query });
+      const { rows: [result] } = await this.dbClient.query(query);
 
-    return result;
+      return result;
+    } catch (error) {
+      this.logger.error('[DB][ERROR] Update shop error', error);
+
+      throw CreateError(500, 'Update shop error');
+    }
   }
 }
 

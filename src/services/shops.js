@@ -1,4 +1,4 @@
-import HttpErrors from 'http-errors';
+import CreateError from 'http-errors';
 
 /**
  * Represents service to handle shops
@@ -65,7 +65,13 @@ class ShopService {
    * @returns {Object} Shop
    */
   async getShopById(id) {
-    return this.shopsRepository.findOneById(id);
+    const result = await this.shopsRepository.findOneById(id);
+
+    if (!result) {
+      throw CreateError(404, 'Shop not found');
+    }
+
+    return result;
   }
 
   /**
@@ -84,7 +90,13 @@ class ShopService {
    * @returns {Object} shop object
    */
   async editShop(id, payload) {
-    return this.shopsRepository.update(id, payload);
+    const result = await this.shopsRepository.update(id, payload);
+
+    if (!result) {
+      throw CreateError(404, 'Shop not found');
+    }
+
+    return result;
   }
 
   /**
@@ -93,7 +105,13 @@ class ShopService {
    * @returns {Object} shop object
    */
   async deleteShopById(id) {
-    return this.shopsRepository.deleteById(id);
+    const result = await this.shopsRepository.deleteById(id);
+
+    if (!result) {
+      throw CreateError(404, 'Shop not found');
+    }
+
+    return result;
   }
 }
 
