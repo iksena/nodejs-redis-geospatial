@@ -2,6 +2,7 @@ import Joi from 'joi';
 
 const shop = Joi.object({
   name: Joi.string()
+    .max(100)
     .required()
     .description('Name'),
   latitude: Joi.number()

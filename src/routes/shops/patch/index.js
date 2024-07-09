@@ -1,17 +1,17 @@
 import { Router } from 'express';
 
-import editEmployee from './handler.js';
 import middlewares from '../../../middlewares/index.js';
 import schema from './schema.js';
+import editShop from './handler.js';
 
 const router = Router();
 const { withShopService, withValidateSchema } = middlewares;
 
 router.patch(
-  '/employees',
+  '/shops/:id',
   withValidateSchema(schema),
   withShopService,
-  editEmployee,
+  editShop,
 );
 
 export default router;

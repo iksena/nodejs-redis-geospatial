@@ -60,6 +60,34 @@ class ShopsRepository {
 
     return result;
   }
+
+  /**
+   * Update a shop
+   *
+   * @param {string} id - shop id
+   * @param {object} payload - shop object
+   * @returns {promise<object>} shop
+   */
+  async update(id, payload) {
+    const values = [];
+    const setQuery = Object.entries(payload).map(
+      ([key, value]) => {
+        values.push(value);
+        return `${key} = %L`;
+      },
+    ).join(', ');
+    const query = format(
+      `UPDATE %I SET ${setQuery} WHERE id = %L RETURNING *;`,
+      this.tableShops,
+      ...values,
+      id,
+    );
+
+    this.logger.info('[DB] Update a shop', { query });
+    const { rows: [result] } = await this.dbClient.query(query);
+
+    return result;
+  }
 }
 
 export default ShopsRepository;

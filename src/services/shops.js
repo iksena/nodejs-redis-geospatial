@@ -41,17 +41,12 @@ class ShopService {
 
   /**
    * Edit a shop to DB
+   * @param {String} id - shop id
    * @param {Object} payload - shop payload
    * @returns {Object} shop object
    */
-  async editShop(payload) {
-    const foundShop = await this.shopsRepository.findOneByEmail(payload.email);
-    if (foundShop === null) {
-      throw new HttpErrors.NotFound('User is not found');
-    }
-    const shop = await this.shopsRepository.saveOrUpdate(payload);
-
-    return shop;
+  async editShop(id, payload) {
+    return this.shopsRepository.update(id, payload);
   }
 }
 

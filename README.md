@@ -1,1 +1,1 @@
-# ms-clockin-shops
+# ms-shops

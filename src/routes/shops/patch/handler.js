@@ -1,8 +1,9 @@
-const editEmployee = async (req, res, next) => {
-  const { logger, employee } = req.app.locals;
+const editShop = async (req, res, next) => {
+  const { params, body, app } = req;
+  const { logger, shop } = app.locals;
 
   try {
-    const response = await employee.editEmployee(req.body);
+    const response = await shop.editShop(params.id, body);
 
     res.status(200).json(response);
   } catch (error) {
@@ -12,4 +13,4 @@ const editEmployee = async (req, res, next) => {
   }
 };
 
-export default editEmployee;
+export default editShop;
