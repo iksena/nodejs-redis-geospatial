@@ -3,7 +3,7 @@ import postEmployees from './post/index.js';
 import patchEmployees from './patch/index.js';
 
 export default [
-  getEmployees,
+  ...getEmployees,
   postEmployees,
   patchEmployees,
 ];

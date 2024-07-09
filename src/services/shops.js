@@ -23,6 +23,14 @@ class ShopService {
   }
 
   /**
+   * Get a shop by id
+   * @returns {Object} Shop
+   */
+  async getShopById(id) {
+    return this.shopsRepository.findOneById(id);
+  }
+
+  /**
    * Create a shop to DB
    * @param {Object} payload - shop payload
    * @returns {Object} shop object

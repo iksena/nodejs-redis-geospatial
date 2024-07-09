@@ -27,14 +27,15 @@ class ShopsRepository {
   }
 
   /**
-   * Find an shop by email
-   * @param {String} email - shop email
+   * Find a shop by id
+   * @param {String} id - shop id
    * @returns {Object} shop object
    */
-  async findOneByEmail(email) {
-    this.logger.info('[DB] Find an shop', { email });
+  async findOneById(id) {
+    this.logger.info('[DB] Find a shop', { id });
+    const { rows: [result] } = await this.dbClient.query('SELECT * FROM shops WHERE id = $1', [id]);
 
-    return this.collection.findOne({ email });
+    return result;
   }
 
   /**

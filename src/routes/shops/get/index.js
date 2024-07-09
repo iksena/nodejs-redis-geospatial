@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import getShopsById from './[id]/index.js';
 import middlewares from '../../../middlewares/index.js';
 import getShops from './handler.js';
 
@@ -12,4 +13,4 @@ router.get(
   getShops,
 );
 
-export default router;
+export default [router, getShopsById];
