@@ -37,14 +37,16 @@ class ShopsGeospatial {
   }
 
   async findNearbyByRadius(latitude, longitude, radius) {
-    const response = await this.redisClient.geoSearch(
+    const response = await this.redisClient.geoSearchWith(
       this.keyShops,
       { longitude, latitude },
       { radius, unit: 'm' },
+      ['WITHDIST'],
+      { SORT: 'ASC' },
     );
 
-    this.logger.info({
-      latitude, longitude, radius, response,
+    this.logger.info('Found nearby locations', {
+      latitude, longitude, radius,
     });
 
     return response;

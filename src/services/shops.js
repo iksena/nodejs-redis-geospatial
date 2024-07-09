@@ -50,7 +50,14 @@ class ShopService {
       radius,
     );
 
-    return response;
+    return response.map(({ member, distance }) => {
+      const shopDetail = shops.find((shop) => shop.id === member);
+
+      return {
+        ...shopDetail,
+        distance,
+      };
+    });
   }
 
   /**
