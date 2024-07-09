@@ -48,6 +48,15 @@ class ShopService {
   async editShop(id, payload) {
     return this.shopsRepository.update(id, payload);
   }
+
+  /**
+   * Delete a shop in DB
+   * @param {String} id - shop id
+   * @returns {Object} shop object
+   */
+  async deleteShopById(id) {
+    return this.shopsRepository.deleteById(id);
+  }
 }
 
 export default ShopService;

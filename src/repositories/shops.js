@@ -44,6 +44,17 @@ class ShopsRepository {
   }
 
   /**
+   * Delete a shop by id
+   * @param {String} id - shop id
+   * @returns {Object} shop object
+   */
+  async deleteById(id) {
+    const query = format('DELETE FROM %I WHERE id = %L', this.tableShops, id);
+    this.logger.info('[DB] Delete a shop', { query });
+    await this.dbClient.query(query);
+  }
+
+  /**
    * Insert a shop
    *
    * @param {object} payload - shop

@@ -1,9 +1,11 @@
-import getEmployees from './get/index.js';
-import postEmployees from './post/index.js';
-import patchEmployees from './patch/index.js';
+import get from './get/index.js';
+import post from './post/index.js';
+import patch from './patch/index.js';
+import deleteShops from './delete/index.js';
 
 export default [
-  ...getEmployees,
-  postEmployees,
-  patchEmployees,
+  ...get,
+  post,
+  patch,
+  deleteShops,
 ];
