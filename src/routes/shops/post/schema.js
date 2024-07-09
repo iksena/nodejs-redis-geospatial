@@ -1,30 +1,17 @@
 import Joi from 'joi';
 
-const employee = Joi.object({
-  email: Joi.string()
-    .email()
-    .required()
-    .description('Email'),
-  phone: Joi.string()
-    .max(20)
-    .required()
-    .description('Phone number'),
+const shop = Joi.object({
   name: Joi.string()
-    .max(100)
     .required()
     .description('Name'),
-  position: Joi.string()
-    .max(100)
+  latitude: Joi.number()
     .required()
-    .description('Job position'),
-  imageUri: Joi.string()
-    .uri()
-    .description('Image URI'),
-  password: Joi.string()
+    .description('Latitude'),
+  longitude: Joi.number()
     .required()
-    .description('password'),
+    .description('Longitude'),
 });
 
-const postEmployee = { body: employee };
+const postShop = { body: shop };
 
-export default postEmployee;
+export default postShop;

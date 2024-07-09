@@ -36,12 +36,7 @@ class ShopService {
    * @returns {Object} shop object
    */
   async createShop(payload) {
-    const foundShop = await this.shopsRepository.findOneByEmail(payload.email);
-    if (foundShop.email === payload.email) {
-      throw new HttpErrors.Forbidden('Email is already used');
-    }
-
-    return this.shopsRepository.saveOrUpdate(payload);
+    return this.shopsRepository.insert(payload);
   }
 
   /**

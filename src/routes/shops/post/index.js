@@ -1,17 +1,17 @@
 import { Router } from 'express';
 
-import createEmployee from './handler.js';
 import middlewares from '../../../middlewares/index.js';
 import schema from './schema.js';
+import createShop from './handler.js';
 
 const router = Router();
 const { withShopService, withValidateSchema } = middlewares;
 
 router.post(
-  '/employees',
+  '/shops',
   withValidateSchema(schema),
   withShopService,
-  createEmployee,
+  createShop,
 );
 
 export default router;

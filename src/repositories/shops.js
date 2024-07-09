@@ -1,7 +1,9 @@
+import format from 'pg-format';
 /**
  *  Represents the connection to shops collection in postgres
  */
 class ShopsRepository {
+  tableShops;
   /**
    * Initialize ShopsRepository
    *
@@ -13,6 +15,7 @@ class ShopsRepository {
    */
   constructor(opts) {
     Object.assign(this, opts);
+    this.tableShops = this.config.resources.db.tables.shops;
   }
 
   /**
@@ -20,8 +23,9 @@ class ShopsRepository {
    * @returns {Array<Object>} list of shops
    */
   async findAll() {
-    this.logger.info('[DB] Get all shops');
-    const { rows } = await this.dbClient.query('SELECT * FROM shops');
+    const query = format('SELECT * FROM %I', this.tableShops);
+    this.logger.info('[DB] Get all shops', { query });
+    const { rows } = await this.dbClient.query(query);
 
     return rows;
   }
@@ -32,36 +36,29 @@ class ShopsRepository {
    * @returns {Object} shop object
    */
   async findOneById(id) {
-    this.logger.info('[DB] Find a shop', { id });
-    const { rows: [result] } = await this.dbClient.query('SELECT * FROM shops WHERE id = $1', [id]);
+    const query = format('SELECT * FROM %I WHERE id = %L', this.tableShops, id);
+    this.logger.info('[DB] Find a shop', { query });
+    const { rows: [result] } = await this.dbClient.query(query);
 
     return result;
   }
 
   /**
-   * Insert or update an shop
+   * Insert a shop
    *
-   * @param {object} payload - user absence
-   * @returns {promise<object>} shop of the user
+   * @param {object} payload - shop
+   * @returns {promise<object>} shop
    */
-  async saveOrUpdate(payload) {
-    this.logger.info('[DB] Insert or update shop', payload);
+  async insert(payload) {
+    const query = format(
+      'INSERT INTO %I (name, latitude, longitude) VALUES (%L) RETURNING *;',
+      this.tableShops,
+      [payload.name, payload.latitude, payload.longitude],
+    );
+    this.logger.info('[DB] Insert a shop', { query });
+    const { rows: [result] } = await this.dbClient.query(query);
 
-    const { email } = payload;
-    const query = { email };
-    const setter = {
-      $set: payload,
-      $currentDate: { modifiedAt: true },
-      $setOnInsert: { createdAt: new Date() },
-    };
-    const options = {
-      upsert: true,
-      returnDocument: 'after',
-    };
-
-    const { value } = await this.collection.findOneAndUpdate(query, setter, options);
-
-    return value;
+    return result;
   }
 }
 
