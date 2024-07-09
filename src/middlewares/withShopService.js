@@ -5,15 +5,15 @@ const { ShopService } = services;
 const { ShopsRepository } = repositories;
 
 const withShopService = (req, res, next) => {
-  const { logger, mongo: { db }, config } = req.app.locals;
+  const { logger, dbClient, config } = req.app.locals;
 
   const shopsRepository = new ShopsRepository({
     logger,
-    table: db.collection(config.resources.db.table.shops),
+    dbClient,
     config,
   });
 
-  req.app.locals.Shop = new ShopService({
+  req.app.locals.shop = new ShopService({
     logger,
     shopsRepository,
   });

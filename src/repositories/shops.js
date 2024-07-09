@@ -7,7 +7,7 @@ class ShopsRepository {
    *
    * @param {object} opts - options
    * @property {object} opts.logger - logger object
-   * @property {object} opts.db - database client
+   * @property {object} opts.dbClient - database client
    * @property {object} opts.config - configuration object
    * @returns {void}
    */
@@ -21,8 +21,9 @@ class ShopsRepository {
    */
   async findAll() {
     this.logger.info('[DB] Get all shops');
+    const { rows } = await this.dbClient.query('SELECT * FROM shops');
 
-    return this.collection.find({}).toArray();
+    return rows;
   }
 
   /**

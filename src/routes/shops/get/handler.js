@@ -1,8 +1,8 @@
-const getEmployees = async (req, res, next) => {
-  const { logger, employee } = req.app.locals;
+const getShops = async (req, res, next) => {
+  const { logger, shop } = req.app.locals;
 
   try {
-    const response = await employee.getEmployees();
+    const response = await shop.getShops();
 
     res.json(response);
   } catch (error) {
@@ -12,4 +12,4 @@ const getEmployees = async (req, res, next) => {
   }
 };
 
-export default getEmployees;
+export default getShops;

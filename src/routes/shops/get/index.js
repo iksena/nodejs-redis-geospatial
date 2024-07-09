@@ -1,15 +1,15 @@
 import { Router } from 'express';
 
-import getEmployees from './handler.js';
 import middlewares from '../../../middlewares/index.js';
+import getShops from './handler.js';
 
 const router = Router();
 const { withShopService } = middlewares;
 
 router.get(
-  '/employees',
+  '/shops',
   withShopService,
-  getEmployees,
+  getShops,
 );
 
 export default router;

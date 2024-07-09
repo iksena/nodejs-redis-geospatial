@@ -28,11 +28,7 @@ export default {
         schema: process.env.DATABASE_SCHEMA || 'public',
       },
       tables: {
-        shops: process.env.DB_TABLE_SHOPS || 'shops',
-      },
-      pool: {
-        min: process.env.DATABASE_POOL_MIN || 2,
-        max: process.env.DATABASE_POOL_MAX || 10,
+        shops: process.env.DATABASE_TABLE_SHOPS || 'shops',
       },
     },
     redis: {
