@@ -35,6 +35,9 @@ export default {
       host: process.env.REDIS_HOST,
       port: process.env.REDIS_PORT,
       timeout: process.env.REDIS_TIME_OUT,
+      keys: {
+        shopsGeospatial: process.env.REDIS_KEY_SHOPS_GEOSPATIAL || 'shops:locations',
+      },
     },
 
   },

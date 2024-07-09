@@ -9,6 +9,7 @@ class ShopService {
      * @param {Object} args - class argument
      * @param {Object} args.logger - bunyan logger
      * @param {Object} args.shopsRepository - shops repository
+     * @param {Object} args.shopsGeospatialRepository - shops repository
     */
   constructor(args) {
     Object.assign(this, args);
@@ -18,8 +19,38 @@ class ShopService {
    * Find all shops
    * @returns {Array<object>} list of shops
    */
-  async getShops() {
-    return this.shopsRepository.findAll();
+  async getShops(searchPayload) {
+    const shops = await this.shopsRepository.findAll();
+
+    if (searchPayload.radius) {
+      this.logger.info('Finding nearby shops', searchPayload);
+      return this.findNearby(shops, searchPayload);
+    }
+
+    return shops;
+  }
+
+  /**
+   * Find nearby shops based on current location
+   * @param {Array<Object>} shops - list of all shops
+   * @param {Object} searchPayload - search payload
+   * @param {Number} searchPayload.latitude - location latitude
+   * @param {Number} searchPayload.longitude - location longitude
+   * @param {Number} searchPayload.radius - radius in meters
+   * @returns list of nearby shops
+   */
+  async findNearby(shops, searchPayload) {
+    await this.shopsGeospatialRepository.reset();
+    await this.shopsGeospatialRepository.populate(shops);
+
+    const { latitude, longitude, radius } = searchPayload;
+    const response = await this.shopsGeospatialRepository.findNearbyByRadius(
+      latitude,
+      longitude,
+      radius,
+    );
+
+    return response;
   }
 
   /**

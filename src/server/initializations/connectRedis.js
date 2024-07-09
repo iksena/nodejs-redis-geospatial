@@ -11,11 +11,13 @@ const redisInitialization = async (app) => {
   const { port, host } = config.resources.redis;
   const { locals: { logger } } = app;
 
-  const redisClient = redis.createClient(port, host);
+  const redisClient = await redis.createClient(port, host);
 
   redisClient.on('error', (err) => {
     logger.error(`Redis Client Error: ${err}`);
   });
+
+  await redisClient.connect();
 
   logger.info('Open connection to redis server...');
 
