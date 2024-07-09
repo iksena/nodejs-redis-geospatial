@@ -1,7 +1,5 @@
-import AbsencesRepository from './absences.js';
-import EmployeesRepository from './employees.js';
+const ShopsRepository = require('./shops');
 
 export default {
-  AbsencesRepository,
-  EmployeesRepository,
+  ShopsRepository,
 };

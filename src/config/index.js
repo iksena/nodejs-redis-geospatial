@@ -5,20 +5,35 @@ env.config();
 export default {
   port: process.env.SERVICE_PORT || 3000,
   loggerOptions: {
-    name: process.env.SERVICE_NAME || 'ms-clockin-shops',
+    name: process.env.SERVICE_NAME || 'ms-shops',
     level: process.env.LOG_LEVEL || 'debug',
   },
   resources: {
     db: {
-      collections: {
-        absences: process.env.DB_ABSENCES_COLLECTION,
-        employees: process.env.DB_EMPLOYEES_COLLECTION,
+      connection: {
+        connectionString: process.env.DATABASE_URL,
+        host: process.env.DATABASE_HOST || 'localhost',
+        port: Number(process.env.DATABASE_PORT) || 5432,
+        database: process.env.DATABASE_NAME || 'postgres',
+        user: process.env.DATABASE_USERNAME || 'postgres',
+        password: process.env.DATABASE_PASSWORD || 'postgres',
+        ssl: (process.env.DATABASE_SSL || false) && {
+          key: process.env.DATABASE_SSL_KEY || undefined,
+          cert: process.env.DATABASE_SSL_CERT || undefined,
+          ca: process.env.DATABASE_SSL_CA || undefined,
+          capath: process.env.DATABASE_SSL_CAPATH || undefined,
+          cipher: process.env.DATABASE_SSL_CIPHER || undefined,
+          rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED || true,
+        },
+        schema: process.env.DATABASE_SCHEMA || 'public',
       },
-      instances: process.env.DB_INSTANCES,
-      options: process.env.DB_OPTIONS,
-      database: process.env.DB_NAME,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
+      tables: {
+        shops: process.env.DB_TABLE_SHOPS || 'shops',
+      },
+      pool: {
+        min: process.env.DATABASE_POOL_MIN || 2,
+        max: process.env.DATABASE_POOL_MAX || 10,
+      },
     },
   },
 };

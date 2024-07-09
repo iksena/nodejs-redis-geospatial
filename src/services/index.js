@@ -1,7 +1,5 @@
-import AbsenceService from './absence.js';
-import EmployeeService from './employee.js';
+const ShopService = require('./shops');
 
-export default {
-  AbsenceService,
-  EmployeeService,
+module.exports = {
+  ShopService,
 };

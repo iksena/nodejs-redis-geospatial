@@ -1,7 +1,5 @@
-import absences from './absences/index.js';
-import employees from './employees/index.js';
+import shops from './shops';
 
 export default [
-  ...absences,
-  ...employees,
+  ...shops,
 ];

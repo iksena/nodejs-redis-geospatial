@@ -1,13 +1,13 @@
 /**
- *  Represents the connection to employees collection in mongoDb
+ *  Represents the connection to shops collection in mongoDb
  */
-class EmployeesRepository {
+class ShopsRepository {
   /**
-   * Initialize EmployeesRepository
+   * Initialize ShopsRepository
    *
    * @param {object} opts - options
    * @property {object} opts.logger - logger object
-   * @property {object} opts.collection - employees collection object
+   * @property {object} opts.collection - shops collection object
    * @property {object} opts.config - configuration object
    * @returns {void}
    */
@@ -16,34 +16,34 @@ class EmployeesRepository {
   }
 
   /**
-   * Find all employees
-   * @returns {Array<Object>} list of employees
+   * Find all shops
+   * @returns {Array<Object>} list of shops
    */
   async findAll() {
-    this.logger.info('[DB] Get all employees');
+    this.logger.info('[DB] Get all shops');
 
     return this.collection.find({}).toArray();
   }
 
   /**
-   * Find an employee by email
-   * @param {String} email - employee email
-   * @returns {Object} employee object
+   * Find an shop by email
+   * @param {String} email - shop email
+   * @returns {Object} shop object
    */
   async findOneByEmail(email) {
-    this.logger.info('[DB] Find an employee', { email });
+    this.logger.info('[DB] Find an shop', { email });
 
     return this.collection.findOne({ email });
   }
 
   /**
-   * Insert or update an employee
+   * Insert or update an shop
    *
    * @param {object} payload - user absence
-   * @returns {promise<object>} employee of the user
+   * @returns {promise<object>} shop of the user
    */
   async saveOrUpdate(payload) {
-    this.logger.info('[DB] Insert or update employee', payload);
+    this.logger.info('[DB] Insert or update shop', payload);
 
     const { email } = payload;
     const query = { email };
@@ -63,4 +63,4 @@ class EmployeesRepository {
   }
 }
 
-export default EmployeesRepository;
+export default ShopsRepository;
